@@ -69,4 +69,111 @@
 // =============================================================================
 
 const readlineSync = require('readline-sync');
+/**
+ * prints a matrix in a neat, aligned grid format.
+ * @param {number[][]} matrix - The matrix to print.
+ */
+function printMatrix(matrix) {
+  for (let i = 0; i < matrix.length; i++) {
+    console.log(matrix[i].join(' '));
+  }
+}
+/**
+ * PART A — Transposes a matrix (rows become columns, columns become rows).
+ * @param {number[][]} matrix - The original matrix.
+ * @returns {number[][]} The transposed matrix.
+ */
+function transposeMatrix(matrix) {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const transposed = [];
+  for (let j = 0; j < cols; j++) {
+    transposed[j] = [];
+    for (let i = 0; i < rows; i++) {
+      transposed[j][i] = matrix[i][j];
+    }
+  }
+  return transposed;
+}
+/**
+ * PART B — Adds two matrices of the same size.
+ * @param {number[][]} matrixA - The first matrix.
+ * @param {number[][]} matrixB - The second matrix.
+ */
+function addMatrices(matrixA, matrixB) {
+  const rows = matrixA.length;
+  const cols = matrixA[0].length;
+  const sumMatrix = [];
+  for (let i = 0; i < rows; i++) {
+    sumMatrix[i] = [];
+    for (let j = 0; j < cols; j++) {
+      sumMatrix[i][j] = matrixA[i][j] + matrixB[i][j];
+    }
+  }
+  return sumMatrix;
+}
+/**
+ * PART C — Multiplies two matrices (A x B).
+ * @param {number[][]} matrixA - The first matrix (M x N).
+ * @param {number[][]} matrixB - The second matrix (N x P).
+ * @returns {number[][]} The product matrix (M x P).
+ */
+function multiplyMatrices(matrixA, matrixB) {
+  const rowsA = matrixA.length;
+  const colsA = matrixA[0].length;
+  const colsB = matrixB[0].length;
+  const productMatrix = [];
+  for (let i = 0; i < rowsA; i++) {
+    productMatrix[i] = [];
+    for (let j = 0; j < colsB; j++) {
+      productMatrix[i][j] = 0;
+      for (let k = 0; k < colsA; k++) {
+        productMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+      }
+    }
+  }
+  return productMatrix;
+}
+/** 
+ * Main application runner demonstrating Part A, Part B, and Part C of matrix operations.
+ */
+function main() {
+    console.log('--- PART A: Transpose a Matrix ---');
+    const rowsA = readlineSync.questionInt('Enter number of rows for matrix A: ');
+    const colsA = readlineSync.questionInt('Enter number of columns for matrix A: ');
+    
+    if (rowsA <= 0 || colsA <= 0) {
+        console.log('Error: Number of rows and columns must be positive integers.');
+        return;
+    }
+    const matrixA = readMatrix(rowsA, colsA, 'A');
+    console.log('Original Matrix A:');
+    printMatrix(matrixA);
+    const transposedA = transposeMatrix(matrixA);
+    console.log('Transposed Matrix A:');
+    printMatrix(transposedA);
 
+    console.log('\n--- PART B: Add Two Matrices ---');
+    console.log('Entering matrix B (same size as A):');
+    const matrixB = readMatrix(rowsA, colsA, 'B');
+    console.log('Matrix A:');
+    printMatrix(matrixA);
+    console.log('Matrix B:');
+    printMatrix(matrixB);
+    const sumMatrix = addMatrices(matrixA, matrixB);
+    console.log('Sum of Matrix A and B:');
+    printMatrix(sumMatrix);                 
+
+    console.log('\n--- PART C: Multiply Two Matrices ---');
+    console.log('Entering matrix C (size N x P) to multiply with A (size M x N):');
+    const rowsC = colsA;
+    if (rowsC <= 0) {
+        console.log('Error: Number of rows for matrix C must be a positive integer.');
+        return;
+    }
+    const matrixC = readMatrix(rowsC, readlineSync.questionInt('Enter number of columns for matrix C: '), 'C');
+    const productMatrix = multiplyMatrices(matrixA, matrixC);
+    console.log('Product of Matrix A and C:');
+    printMatrix(productMatrix);
+}
+main();

@@ -73,5 +73,136 @@
 // =============================================================================
 // YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
 // =============================================================================
+const readlineSync = require('readline-sync');
+/**
+ * Adds two numbers.
+ * @param {number} a - The first number.
+ * @param {number} b - The second number.
+ * @returns {number} The sum of a and b.
+ */
+function add(a, b) {
+    return a + b;
+}
+/**
+ * Subtracts the second number from the first.
+ * @param {number} a - The first number.
+ * @param {number} b - The second number.
+ */
+function subtract(a, b) {
+    return a - b;
+}
+/**
+ * Multiplies two numbers.
+ * @param {number} a - The first number.
+ * @param {number} b - The second number.
+ */
+function multiply(a, b) {
+    return a * b;
+}
+/**
+ * Divides the first number by the second.
+ * @param {number} a - The first number.
+ * @param {number} b - The second number.
+ * @returns {number} The result of the division.
+ */
+function divide(a, b) {
+    if (b === 0) {
+        throw new Error("Cannot divide by zero.");
+    }
+    return a / b;
+}
+/**
+ * Calculates the remainder of dividing the first number by the second.
+ * @param {number} a - The first number.
+ * @param {number} b - The second number.
+ * @returns {number} The remainder of the division.
+ */
+function modulus(a, b) {
+    return a % b;
+}
+/**
+ * Raises the first number to the power of the second.
+ * @param {number} a - The base.
+ * @param {number} b - The exponent.
+ * @returns {number} The result of the exponentiation.
+ */
+function exponentiate(a, b) {
+    return a ** b;
+}
+/**
+ * Displays the calculator menu and handles user input.
+ */
+function mainMenu() {
+    console.log('\n============================');
+    console.log('     SIMPLE CALCULATOR');
+    console.log('============================');
+    console.log('1. Addition');
+    console.log('2. Subtraction');
+    console.log('3. Multiplication');
+    console.log('4. Division');
+    console.log('5. Modulus');
+    console.log('6. Exponentiation');
+    console.log('7. Quit');
+}
+/**
+ * Helper function to get two numbers from the user.
+ * @returns {number[]} An array containing the two numbers.
+ */
+function getTwoNumbers() {
+    const num1 = readlineSync.questionFloat('Enter first number: ');
+    const num2 = readlineSync.questionFloat('Enter second number: ');
+    return [num1, num2];
+}
+/**
+ * Main application loop that runs the calculator until the user chooses to quit.
+ */
+function main() {
+    let running = true;
+    while (running) {
+        mainMenu();
+        const choice = readlineSync.questionInt('Select an operation (1-7): ');
+        if (choice < 1 || choice > 7) {
+            console.log('Goodbye!');
+            running = false;
+            continue;
+        }
 
-
+        switch (choice) {
+            case 1: // Addition
+                const [addNum1, addNum2] = getTwoNumbers();
+                let result = add(addNum1, addNum2);
+                console.log(`Result: ${addNum1} + ${addNum2} = ${result.toFixed(2)}`);
+                break;
+            case 2: // Subtraction
+                const [subNum1, subNum2] = getTwoNumbers();
+                result = subtract(subNum1, subNum2);
+                console.log(`Result: ${subNum1} - ${subNum2} = ${result.toFixed(2)}`);
+                break;
+            case 3: // Multiplication
+                const [mulNum1, mulNum2] = getTwoNumbers();
+                result = multiply(mulNum1, mulNum2);
+                console.log(`Result: ${mulNum1} * ${mulNum2} = ${result.toFixed(2)}`);
+                break;
+            case 4: // Division
+                const [divNum1, divNum2] = getTwoNumbers();
+                try {
+                    result = divide(divNum1, divNum2);
+                    console.log(`Result: ${divNum1} / ${divNum2} = ${result.toFixed(2)}`);
+                } catch (error) {
+                    console.log(error.message);
+                }
+                break;
+            case 5: // Modulus
+                const [modNum1, modNum2] = getTwoNumbers();
+                result = modulus(modNum1, modNum2);
+                console.log(`Result: ${modNum1} % ${modNum2} = ${result.toFixed(2)}`);
+                break;
+            case 6: // Exponentiation
+                const [expNum1, expNum2] = getTwoNumbers();
+                result = exponentiate(expNum1, expNum2);
+                console.log(`Result: ${expNum1} ^ ${expNum2} = ${result.toFixed(2)}`);
+                break;
+        }
+    }
+}
+main();
